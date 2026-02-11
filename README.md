@@ -20,9 +20,9 @@
 - Tell me about your account so I can add it to the Collaborators list
 - Accept the collaboration invite
 - Open VS Code and open a new folder
-- Go to the `Extensions` tab on the left and install `GitHub Pull Requests` (Restart VS Code to apply)
-- Execute the following command in the VS Code console: `git clone https://github.com/Miner3D-Gamer/lunova`
-- Execute the following command in the VS Code console: `cd lunova`
+- Go to the `Extensions` tab on the left and install `GitHub Pull Requests` + `rust`(Restart VS Code to apply)
+- Execute the following command in the VS Code terminal: `git clone https://github.com/Miner3D-Gamer/lunova`
+- Execute the following command in the VS Code terminal: `cd lunova`
 - Now Execute this: `git checkout -b <YourName>` (`<YourName>` but be lowercase and not include spaces)
 
 You have now created your own environment (branch) in which no one will disturb you.
