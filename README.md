@@ -26,7 +26,7 @@
 - Reopen VS Code
 - Execute the following command in the VS Code terminal: `git clone https://github.com/Miner3D-Gamer/lunova`
 - Execute the following command in the VS Code terminal: `cd lunova`
-- Now Execute this: `git checkout -b <YourName>` (`<YourName>` but be lowercase and not include spaces)
+- Now Execute this: `git checkout -b YourName` (`YourName` but be lowercase and not include spaces)
 
 You have now created your own environment (branch) in which no one will disturb you.
 
