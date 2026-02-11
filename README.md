@@ -13,16 +13,17 @@
 
 ## How to contribute (For friends):
 
-### Setup (From 0 to ready):
+### Setup (From 0 to ready in 14 steps):
 
-- Install VS Code
 - Create Github account
 - Tell me about your account so I can add it to the Collaborators list
 - Accept the collaboration invite
+- Install VS Code
 - Open VS Code and open a new folder
 - Go to the `Extensions` tab on the left and install `GitHub Pull Requests` + `rust`(Restart VS Code to apply)
 - Open `Source Control` tab (on the left) and download `git`
-- Restart your computer to finalize the `git` installation
+- Install [`rust`](https://rust-lang.org/tools/install/) <https://rust-lang.org/tools/install/>
+- Restart your computer to finalize the `git` and `rust` installations
 - Reopen VS Code
 - Execute the following command in the VS Code terminal: `git clone https://github.com/Miner3D-Gamer/lunova`
 - Execute the following command in the VS Code terminal: `cd lunova`
