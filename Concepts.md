@@ -1,4 +1,4 @@
-# Ideas and plans for th creation of this project.
+# Ideas and plans for the creation of this project.
 
 ## First steps:
 
