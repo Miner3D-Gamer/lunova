@@ -35,9 +35,13 @@ You have now created your own environment (branch) in which no one will disturb 
 
 - Make changes to the code
 - Go to the "Source Control" tab on the left (Right-click on the bar if it isn't visible)
-- If the button says `Pull`, click it to receive updated code from the `main` branch
 - Select which file changes you'd like to upload
 - Describe your changes in the text box and press `Commit` (It will say `Publish Branch` instead if it's the first time)
+
+#### Now if you want to sync the changes from your branch to main/the other way around:
+
+- Go to the `Source Control` tab, under the `...` next to changes: Click `Branch` -> `Rebase branch...`
+- Select the bottom most branch: `origin/main`, NOT `main`
 
 ### Done!
 

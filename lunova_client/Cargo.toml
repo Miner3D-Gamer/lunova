@@ -5,3 +5,8 @@ edition = "2024"
 
 [dependencies]
 tokio = { workspace = true }
+mirl = { workspace = true }
+lunova_lib = { path = "../lunova_lib" }
+
+[lints]
+workspace = true
