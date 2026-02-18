@@ -73,7 +73,7 @@ async fn main() -> std::io::Result<()> {
     let account = lunova_lib::users::user::Accounts::new(
         lunova_lib::users::user_id::UserID::new(
             "test_user".to_string(),
-            &server.configs.user_id_contraints,
+            &server.configs.user_id_constraints,
         )
         .unwrap(),
         "User".to_string(),

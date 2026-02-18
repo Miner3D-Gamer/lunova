@@ -192,7 +192,7 @@ impl FromPatch<ServerConfigsVersion0> for ServerConfigs {
     fn from_value(value: ServerConfigsVersion0) -> Self {
         Self {
             user_standing: value.user_standing.into_value(),
-            user_id_contraints: value.user_id_contraints.into_value(),
+            user_id_constraints: value.user_id_constraints.into_value(),
         }
     }
 }
@@ -201,7 +201,7 @@ impl FromPatch<ServerConfigs> for ServerConfigsVersion0 {
     fn from_value(value: ServerConfigs) -> Self {
         Self {
             user_standing: value.user_standing.into_value(),
-            user_id_contraints: value.user_id_contraints.into_value(),
+            user_id_constraints: value.user_id_constraints.into_value(),
         }
     }
 }

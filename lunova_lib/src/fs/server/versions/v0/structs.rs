@@ -282,7 +282,7 @@ pub struct ServerConfigsVersion0 {
     /// [`StandingConfigVersion0`]
     pub user_standing: StandingConfigVersion0,
     /// [`IDConstraints`]
-    pub user_id_contraints: IDConstraintsVersion0,
+    pub user_id_constraints: IDConstraintsVersion0,
 }
 #[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 #[repr(C)]

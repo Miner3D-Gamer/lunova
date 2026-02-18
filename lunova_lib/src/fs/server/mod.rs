@@ -43,7 +43,7 @@ pub const trait GetVersion {
     fn get_version() -> u16;
 }
 
-/// Safety that the struct always contains the latest and correct amount of serverstates
+/// Safety that the struct always contains the latest and correct amount of server states
 const _: () = {
     assert!(
         ServerVersionsRaw::count() as u16 == LatestServerState::get_version()

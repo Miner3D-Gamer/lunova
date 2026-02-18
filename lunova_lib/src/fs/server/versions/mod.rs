@@ -1,4 +1,4 @@
-/// The initial barebone server with only users and dms
+/// The initial bare-bone server with only users and dms
 pub mod v0;
 
 // #[macro_export]

@@ -33,7 +33,7 @@ pub struct ServerConfigs {
     /// [`StandingConfig`]
     pub user_standing: StandingConfig,
     /// [`IDConstraints`]
-    pub user_id_contraints: IDConstraints,
+    pub user_id_constraints: IDConstraints,
 }
 
 // /// Load the server state from disk
