@@ -6,18 +6,20 @@ use crate::{
         shared::{Message, MessageId, TextChat},
     },
     fs::server::versions::v0::{
-        AllDMsVersion0, DMIDVersion0, MessageIdVersion0, MessageVersion0,
-        PendingFriendRequestsVersion0, ReportReasonsVersion0, ReportVersion0,
-        ServerConfigsVersion0, ServerStateVersion0, StandingConfigVersion0,
-        StandingTypeVersion0, StandingVersion0, StatusVersion0,
-        TextChatVersion0, UserIDVersion0, UserVersion0, UsersVersion0,
+        AllDMsVersion0, DMIDVersion0, IDConstraintsVersion0, MessageIdVersion0,
+        MessageVersion0, PendingFriendRequestsVersion0, ReportReasonsVersion0,
+        ReportVersion0, ServerConfigsVersion0, ServerStateVersion0,
+        StandingConfigVersion0, StandingTypeVersion0, StandingVersion0,
+        StatusVersion0, TextChatVersion0, TimestampVersion0, UserIDVersion0,
+        UserVersion0, UsersVersion0,
     },
     server::{PendingFriendRequests, ServerConfigs, ServerState},
+    shared::Timestamp,
     throughput::reports::{Report, ReportReasons},
     users::{
         AllAccounts,
-        user::{Standing, StandingConfig, StandingType, Status, Accounts},
-        user_id::UserID,
+        user::{Accounts, Standing, StandingConfig, StandingType, Status},
+        user_id::{IDConstraints, UserID},
     },
 };
 
@@ -116,10 +118,10 @@ impl FromPatch<MessageId> for MessageIdVersion0 {
 impl FromPatch<Message> for MessageVersion0 {
     fn from_value(value: Message) -> Self {
         Self {
-            timestamp_send: value.timestamp_send,
+            timestamp_send: value.timestamp_send.into_value(),
             sender: value.sender.into_value(),
-            timestamp: value.timestamp,
-            edited_timestamp: value.edited_timestamp,
+            timestamp: value.timestamp.into_value(),
+            edited_timestamp: value.edited_timestamp.into_value(),
             content: value.content,
             reactions: value.reactions.into_value(),
         }
@@ -128,10 +130,10 @@ impl FromPatch<Message> for MessageVersion0 {
 impl FromPatch<MessageVersion0> for Message {
     fn from_value(value: MessageVersion0) -> Self {
         Self {
-            timestamp_send: value.timestamp_send,
+            timestamp_send: value.timestamp_send.into_value(),
             sender: value.sender.into_value(),
-            timestamp: value.timestamp,
-            edited_timestamp: value.edited_timestamp,
+            timestamp: value.timestamp.into_value(),
+            edited_timestamp: value.edited_timestamp.into_value(),
             content: value.content,
             reactions: value.reactions.into_value(),
         }
@@ -190,6 +192,7 @@ impl FromPatch<ServerConfigsVersion0> for ServerConfigs {
     fn from_value(value: ServerConfigsVersion0) -> Self {
         Self {
             user_standing: value.user_standing.into_value(),
+            user_id_contraints: value.user_id_contraints.into_value(),
         }
     }
 }
@@ -198,6 +201,35 @@ impl FromPatch<ServerConfigs> for ServerConfigsVersion0 {
     fn from_value(value: ServerConfigs) -> Self {
         Self {
             user_standing: value.user_standing.into_value(),
+            user_id_contraints: value.user_id_contraints.into_value(),
+        }
+    }
+}
+impl FromPatch<IDConstraintsVersion0> for IDConstraints {
+    fn from_value(value: IDConstraintsVersion0) -> Self {
+        Self {
+            allowed: value.allowed,
+            allowed_special: value.allowed_special,
+            min_length: value.min_length,
+            max_length: value.max_length,
+            allow_special_character_at_start: value
+                .allow_special_character_at_start,
+            allow_special_character_at_end: value
+                .allow_special_character_at_end,
+        }
+    }
+}
+impl FromPatch<IDConstraints> for IDConstraintsVersion0 {
+    fn from_value(value: IDConstraints) -> Self {
+        Self {
+            allowed: value.allowed,
+            allowed_special: value.allowed_special,
+            min_length: value.min_length,
+            max_length: value.max_length,
+            allow_special_character_at_start: value
+                .allow_special_character_at_start,
+            allow_special_character_at_end: value
+                .allow_special_character_at_end,
         }
     }
 }
@@ -246,8 +278,8 @@ impl FromPatch<UserVersion0> for Accounts {
             reports_against_this_user: value
                 .reports_against_this_user
                 .into_value(),
-            last_online: value.last_online,
-            account_creation_date: value.account_creation_date,
+            last_online: value.last_online.into_value(),
+            account_creation_date: value.account_creation_date.into_value(),
             status: value.status.into_value(),
             bio: value.bio,
             standing: value.standing.into_value(),
@@ -264,8 +296,8 @@ impl FromPatch<Accounts> for UserVersion0 {
             reports_against_this_user: value
                 .reports_against_this_user
                 .into_value(),
-            last_online: value.last_online,
-            account_creation_date: value.account_creation_date,
+            last_online: value.last_online.into_value(),
+            account_creation_date: value.account_creation_date.into_value(),
             status: value.status.into_value(),
             bio: value.bio,
             standing: value.standing.into_value(),
@@ -300,7 +332,7 @@ impl FromPatch<Report> for ReportVersion0 {
 impl FromPatch<Status> for StatusVersion0 {
     fn from_value(value: Status) -> Self {
         Self {
-            expiration_date: value.expiration_date,
+            expiration_date: value.expiration_date.into_value(),
             message: value.message,
         }
     }
@@ -309,7 +341,7 @@ impl FromPatch<Status> for StatusVersion0 {
 impl FromPatch<StatusVersion0> for Status {
     fn from_value(value: StatusVersion0) -> Self {
         Self {
-            expiration_date: value.expiration_date,
+            expiration_date: value.expiration_date.into_value(),
             message: value.message,
         }
     }
@@ -446,3 +478,19 @@ impl FromPatch<ReportReasons> for ReportReasonsVersion0 {
 //         }
 //     }
 // }
+
+impl FromPatch<TimestampVersion0> for Timestamp {
+    fn from_value(value: TimestampVersion0) -> Self {
+        Self {
+            after_epoch: value.after_epoch,
+        }
+    }
+}
+
+impl FromPatch<Timestamp> for TimestampVersion0 {
+    fn from_value(value: Timestamp) -> Self {
+        Self {
+            after_epoch: value.after_epoch,
+        }
+    }
+}

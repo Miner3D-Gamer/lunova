@@ -1,3 +1,6 @@
+#![feature(const_trait_impl)]
+#![feature(likely_unlikely)]
+#![feature(ascii_char)]
 //! An underlying lib both the client and server can use to keep in sync
 // use mirl::prelude::*;
 
@@ -17,3 +20,6 @@ pub mod throughput;
 
 /// Saving/Loading client and server stuff
 pub mod fs;
+
+/// Misc
+pub mod shared;

@@ -1,5 +1,5 @@
 use super::ChatLocation;
-use crate::users::user_id::UserID;
+use crate::{shared::Timestamp, users::user_id::UserID};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 /// An api call both the client and server could request from one another
@@ -16,7 +16,7 @@ pub struct SendNewMessage {
     /// Sender ID
     pub sender: UserID,
     /// At what time the message was send
-    pub timestamp: std::time::SystemTime,
+    pub timestamp: Timestamp,
     /// The content of the message
     pub content: String,
     /// Where the message is going

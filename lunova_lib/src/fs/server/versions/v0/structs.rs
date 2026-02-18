@@ -1,25 +1,51 @@
 #![allow(missing_docs)]
-use mirl::impl_from_patch_self;
+use bitcode::{Decode, Encode};
+use serde::{Deserialize, Serialize};
+use wincode::{SchemaRead, SchemaWrite};
 
+use crate::fs::server::GetVersion;
+
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 #[repr(C)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 /// A singular text message
 pub struct MessageVersion0 {
-    pub timestamp_send: std::time::SystemTime,
+    pub timestamp_send: TimestampVersion0,
     pub sender: UserIDVersion0,
-    pub timestamp: std::time::SystemTime,
-    pub edited_timestamp: std::time::SystemTime,
+    pub timestamp: TimestampVersion0,
+    pub edited_timestamp: TimestampVersion0,
     pub content: String,
     pub reactions: Vec<(Vec<UserIDVersion0>, String)>,
 }
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 #[repr(C)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+/// A timestamp
+pub struct TimestampVersion0 {
+    /// How many seconds the event happened after epoch
+    pub after_epoch: u128,
+}
+
+#[repr(C)]
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 /// A message id
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct MessageIdVersion0 {
     pub id: u64,
 }
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+)]
 /// A text based channel
 pub struct TextChatVersion0 {
     /// All messages
@@ -31,6 +57,7 @@ pub struct TextChatVersion0 {
     /// Any pinned messages
     pub pinned: Vec<String>,
 }
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 #[repr(C)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 /// An "ID", an identifier that is not allowed to be same for two users
@@ -38,13 +65,27 @@ pub struct UserIDVersion0 {
     pub id: String,
 }
 #[repr(C)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
+)]
 /// A unique id for dms
 pub struct DMIDVersion0 {
     pub id: u64,
 }
 
 #[repr(C)]
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 /// The DMs saved on the server
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AllDMsVersion0 {
@@ -55,15 +96,42 @@ pub struct AllDMsVersion0 {
 }
 
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+)]
 /// A list of all users
 pub struct UsersVersion0 {
     /// All registered accounts
     pub users: Vec<UserVersion0>,
 }
 
+impl const GetVersion for ServerStateVersion0 {
+    fn get_version() -> u16 {
+        1
+    }
+}
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+)]
 /// The first server state version only saving dms and users
 pub struct ServerStateVersion0 {
     /// Peer to peer messaging
@@ -76,7 +144,18 @@ pub struct ServerStateVersion0 {
     pub configs: ServerConfigsVersion0,
 }
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+)]
 /// A plain old user
 pub struct UserVersion0 {
     /// A unique ID no other user is allowed to have
@@ -88,16 +167,17 @@ pub struct UserVersion0 {
     /// Reports that
     pub reports_against_this_user: Vec<ReportVersion0>,
     /// The last interaction the user had with the server
-    pub last_online: std::time::SystemTime,
+    pub last_online: TimestampVersion0,
     /// When the account was created
-    pub account_creation_date: std::time::SystemTime,
+    pub account_creation_date: TimestampVersion0,
     /// A status a user may set for a specified amount of time
-    pub status: StatusVersion0,
+    pub status: Option<StatusVersion0>,
     /// A self assigned user description
     pub bio: String,
     /// How the user is doing from our pov
     pub standing: StandingVersion0,
 }
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 #[repr(C)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 /// How the user is doing from our pov
@@ -118,7 +198,21 @@ pub struct StandingVersion0 {
     pub total_watchfulness: u8,
 }
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Copy)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    Copy,
+)]
 /// The rights of the user
 pub enum StandingTypeVersion0 {
     /// Everything about the user is normal
@@ -132,6 +226,7 @@ pub enum StandingTypeVersion0 {
 }
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Copy)]
 #[repr(C)]
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 /// Control over the standing a user may has
 pub struct StandingConfigVersion0 {
     /// How many days the user
@@ -140,30 +235,76 @@ pub struct StandingConfigVersion0 {
     pub automatic_ban_at_total_watchfulness: Option<u8>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+)]
 #[repr(C)]
 /// A often temporary "mini" bio
 pub struct StatusVersion0 {
-    pub expiration_date: std::time::SystemTime,
+    pub expiration_date: TimestampVersion0,
     pub message: String,
 }
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+)]
 #[repr(C)]
 /// Friend requests that are out and ingoing
 pub struct PendingFriendRequestsVersion0 {
     /// Ones that still have to be accepted/canceled
     pub pending:
-        Vec<(UserIDVersion0, Vec<(UserIDVersion0, std::time::SystemTime)>)>,
+        Vec<(UserIDVersion0, Vec<(UserIDVersion0, TimestampVersion0)>)>,
 }
-#[derive(Debug, Clone, PartialEq, Eq, Copy)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 #[repr(C)]
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 /// A collection of all server related configs
 pub struct ServerConfigsVersion0 {
     /// [`StandingConfigVersion0`]
     pub user_standing: StandingConfigVersion0,
+    /// [`IDConstraints`]
+    pub user_id_contraints: IDConstraintsVersion0,
+}
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
+#[repr(C)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+/// The conditions an id must follow to be valid
+pub struct IDConstraintsVersion0 {
+    /// What characters allowed anywhere
+    pub allowed: String,
+    /// Special characters, they are not allowed to be next to each other as otherwise an id like "..." would be valid when we only want to allow "bob.last"
+    pub allowed_special: String,
+    /// The minimum amount of characters the id must have
+    pub min_length: usize,
+    /// The maximum amount of characters the id must have
+    pub max_length: usize,
+    /// If the id is allowed to start with a special character: ".bread"
+    pub allow_special_character_at_start: bool,
+    /// If the id is allowed to end on a special character: "bread."
+    pub allow_special_character_at_end: bool,
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 #[repr(C)]
+#[derive(SchemaRead, SchemaWrite, Deserialize, Serialize, Encode, Decode)]
 /// A report
 pub struct ReportVersion0 {
     /// What the report is about
@@ -240,7 +381,20 @@ pub struct ReportReasonSeverityVersion0 {
     pub copyright_or_ip_infringement: ReportSeverityVersion0,
 }
 #[repr(C)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(
+    SchemaRead,
+    SchemaWrite,
+    Deserialize,
+    Serialize,
+    Encode,
+    Decode,
+    Debug,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+)]
 /// Any reason to report a chat message or person
 pub enum ReportReasonsVersion0 {
     /// When you don't like someone
@@ -294,7 +448,7 @@ pub enum ReportReasonsVersion0 {
     /// Redacted content also fits into this category
     CopyrightOrIpInfringement,
 }
-impl_from_patch_self!(
+mirl::impl_from_patch_self!(
     UserVersion0,
     UsersVersion0,
     ReportVersion0,

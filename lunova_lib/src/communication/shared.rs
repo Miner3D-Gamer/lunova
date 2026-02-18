@@ -1,4 +1,4 @@
-use crate::users::user_id::UserID;
+use crate::{shared::Timestamp, users::user_id::UserID};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 /// A text based channel
@@ -18,11 +18,11 @@ pub struct Message {
     /// Who send the message
     pub sender: UserID,
     /// When the message/edit was send (Client side)
-    pub timestamp_send: std::time::SystemTime,
+    pub timestamp_send: Timestamp,
     /// When the message arrived (Server side)
-    pub timestamp: std::time::SystemTime,
+    pub timestamp: Timestamp,
     /// When the message was edited (Server side)
-    pub edited_timestamp: std::time::SystemTime,
+    pub edited_timestamp: Timestamp,
     /// What text the message contains
     pub content: String,
     /// Any reactions to the message

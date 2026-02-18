@@ -1,7 +1,13 @@
 use crate::{
     communication::dm::AllDMs,
-    users::{AllAccounts, user::StandingConfig, user_id::UserID},
+    shared::Timestamp,
+    users::{
+        AllAccounts,
+        user::StandingConfig,
+        user_id::{IDConstraints, UserID},
+    },
 };
+
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 /// The state of the server
 pub struct ServerState {
@@ -19,13 +25,15 @@ pub struct ServerState {
 /// Friend requests that are out and ingoing
 pub struct PendingFriendRequests {
     /// Ones that still have to be accepted/canceled
-    pub pending: Vec<(UserID, Vec<(UserID, std::time::SystemTime)>)>,
+    pub pending: Vec<(UserID, Vec<(UserID, Timestamp)>)>,
 }
-#[derive(Debug, Clone, PartialEq, Eq, Copy, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 /// A collection of all server related configs
 pub struct ServerConfigs {
     /// [`StandingConfig`]
     pub user_standing: StandingConfig,
+    /// [`IDConstraints`]
+    pub user_id_contraints: IDConstraints,
 }
 
 // /// Load the server state from disk

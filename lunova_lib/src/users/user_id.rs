@@ -24,20 +24,27 @@ impl UserID {
         &self.id
     }
 }
+
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 /// The conditions an id must follow to be valid
 pub struct IDConstraints {
-    allowed: String,
-    allowed_special: String,
-    min_length: usize,
-    max_length: usize,
-    allow_special_character_at_start: bool,
-    allow_special_character_at_end: bool,
+    /// What characters allowed anywhere
+    pub allowed: String,
+    /// Special characters, they are not allowed to be next to each other as otherwise an id like "..." would be valid when we only want to allow "bob.last"
+    pub allowed_special: String,
+    /// The minimum amount of characters the id must have
+    pub min_length: usize,
+    /// The maximum amount of characters the id must have
+    pub max_length: usize,
+    /// If the id is allowed to start with a special character: ".bread"
+    pub allow_special_character_at_start: bool,
+    /// If the id is allowed to end on a special character: "bread."
+    pub allow_special_character_at_end: bool,
 }
 impl core::default::Default for IDConstraints {
     fn default() -> Self {
         Self {
-            allowed: "qwertzuioplkjhgfdsayxcvbnm".to_string(),
+            allowed: "abcdefghijklmnopqrstuvwxyz".to_string(),
             allowed_special: "_-".to_string(),
             min_length: 4,
             max_length: 12,

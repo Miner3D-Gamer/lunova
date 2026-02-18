@@ -1,0 +1,1 @@
+cargo run --bin lunova_server -- -s ./storage

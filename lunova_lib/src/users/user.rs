@@ -1,4 +1,6 @@
-use crate::{throughput::reports::Report, users::user_id::UserID};
+use crate::{
+    shared::Timestamp, throughput::reports::Report, users::user_id::UserID,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 /// A plain old user
@@ -12,26 +14,43 @@ pub struct Accounts {
     /// Reports that
     pub reports_against_this_user: Vec<Report>,
     /// The last interaction the user had with the server
-    pub last_online: std::time::SystemTime,
+    pub last_online: Timestamp,
     /// When the account was created
-    pub account_creation_date: std::time::SystemTime,
+    pub account_creation_date: Timestamp,
     /// A status a user may set for a specified amount of time
-    pub status: Status,
+    pub status: Option<Status>,
     /// A self assigned user description
     pub bio: String,
     /// How the user is doing from our pov
     pub standing: Standing,
+}
+impl Accounts {
+    #[must_use] 
+    /// Create a blank new user account
+    pub fn new(id: UserID, username: String) -> Self {
+        Self {
+            id,
+            username,
+            friends: Vec::new(),
+            reports_against_this_user: Vec::new(),
+            last_online: Timestamp::now(),
+            account_creation_date: Timestamp::now(),
+            status: None,
+            bio: String::new(),
+            standing: Standing::default(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 /// A often temporary "mini" bio
 pub struct Status {
     /// When the status should expire
-    pub expiration_date: std::time::SystemTime,
+    pub expiration_date: Timestamp,
     /// The the current status says
     pub message: String,
 }
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Default)]
 /// How the user is doing from our pov
 pub struct Standing {
     /// How many times a user may have been warned before and for what reason
@@ -50,9 +69,10 @@ pub struct Standing {
     pub total_watchfulness: u8,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Copy)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Copy, Default)]
 /// The rights of the user
 pub enum StandingType {
+    #[default]
     /// Everything about the user is normal
     AllGood,
     /// If the user has been in some controversy
